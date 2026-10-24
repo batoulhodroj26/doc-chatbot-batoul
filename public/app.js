@@ -11,7 +11,7 @@ function addMessage(text, sender) {
   return div;
 }
 
-chatForm.addEventListener('submit', (e) => {
+chatForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const question = questionInput.value.trim();
 
@@ -22,8 +22,37 @@ chatForm.addEventListener('submit', (e) => {
 
   addMessage(question, 'user');
   questionInput.value = '';
-  addMessage('(The AI answer will appear here later.)', 'ai');
+
+  const loading = addMessage('Thinking...', 'ai');
+  loading.classList.add('loading');
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question })
+    });
+    const data = await res.json();
+    loading.remove();
+
+    if (!res.ok) {
+      addMessage(data.error, 'ai');
+      return;
+    }
+
+    const answer = addMessage(data.answer, 'ai');
+    if (data.sources && data.sources.length) {
+      const src = document.createElement('div');
+      src.className = 'source small mt-2';
+      src.textContent = 'Source: ' + data.sources.join(', ');
+      answer.appendChild(src);
+    }
+  } catch (err) {
+    loading.remove();
+    addMessage('Could not reach the server. Please try again.', 'ai');
+  }
 });
+
 const uploadForm = document.getElementById('uploadForm');
 const fileInput = document.getElementById('fileInput');
 const uploadStatus = document.getElementById('uploadStatus');

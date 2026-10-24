@@ -18,3 +18,16 @@
   margin-right: auto;
   background: var(--bs-secondary-bg);
 }
+.loading {
+  opacity: 0.6;
+  font-style: italic;
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  50% { opacity: 0.3; }
+}
+.source {
+  opacity: 0.7;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 4px;
+}
