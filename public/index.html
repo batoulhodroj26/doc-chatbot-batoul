@@ -10,8 +10,12 @@
 <body>
   <div class="container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
+   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
       <h1 class="h4 mb-0">Document Chatbot</h1>
+      <div class="d-flex gap-2">
+        <button id="clearChatBtn" class="btn btn-outline-danger btn-sm">Clear chat</button>
+        <button id="themeBtn" class="btn btn-outline-secondary btn-sm">Dark mode</button>
+      </div>
     </div>
 
     <div class="card mb-3">
@@ -20,7 +24,11 @@
           <input type="file" id="fileInput" class="form-control" accept=".pdf,.txt,.docx,.csv">
           <button type="submit" class="btn btn-primary">Upload</button>
         </form>
-        <div id="uploadStatus" class="small mt-2 text-muted"></div>
+  <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+     <div id="uploadStatus" class="small mt-2 text-muted"></div
+     <ul id="docList" class="small mb-0 ps-3"></ul>
+     <button id="clearDocsBtn" class="btn btn-outline-warning btn-sm">Clear documents</button>
+   </div>
       </div>
     </div>
 
@@ -35,6 +43,7 @@
     </div>
 
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -41,6 +41,7 @@ chatForm.addEventListener('submit', async (e) => {
     }
 
     const answer = addMessage(data.answer, 'ai');
+    answer.innerHTML = marked.parse(data.answer);
     if (data.sources && data.sources.length) {
       const src = document.createElement('div');
       src.className = 'source small mt-2';
@@ -91,3 +92,34 @@ uploadForm.addEventListener('submit', async (e) => {
     uploadStatus.className = 'small mt-2 text-danger';
   }
 });
+const themeBtn = document.getElementById('themeBtn');
+const clearChatBtn = document.getElementById('clearChatBtn');
+
+themeBtn.addEventListener('click', () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-bs-theme') === 'dark';
+  html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
+  themeBtn.textContent = isDark ? 'Dark mode' : 'Light mode';
+});
+
+clearChatBtn.addEventListener('click', () => {
+  chatBox.innerHTML = '';
+});
+   const docList = document.getElementById('docList');
+   const clearDocsBtn = document.getElementById('clearDocsBtn');
+
+   function showDocuments(names) {
+     docList.innerHTML = '';
+     names.forEach(name => {
+       const li = document.createElement('li');
+       li.textContent = name;
+       docList.appendChild(li);
+     });
+   }
+
+   clearDocsBtn.addEventListener('click', async () => {
+     await fetch('/api/clear-documents', { method: 'POST' });
+     showDocuments([]);
+     uploadStatus.textContent = 'All documents cleared. Upload a new document to continue.';
+     uploadStatus.className = 'small mt-2 text-muted';
+   });

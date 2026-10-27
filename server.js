@@ -21,7 +21,12 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     }
     const chunkCount = await addDocument(req.file.originalname, text);
     documents.push({ name: req.file.originalname, chunks: chunkCount });
-    res.json({ message: 'Uploaded ' + req.file.originalname, characters: text.length, totalDocuments: documents.length });
+       res.json({
+     message: 'Uploaded ' + req.file.originalname,
+     characters: text.length,
+     totalDocuments: documents.length,
+     documents: documents.map(d => d.name)
+   });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
