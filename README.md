@@ -18,7 +18,7 @@ This app lets users upload documents (PDF, TXT, DOCX or CSV) and ask questions a
 ## Tech Stack
 - Node.js + Express (backend)
 - LangChain.js (text splitting, MemoryVectorStore)
-- Google Gemini API (embeddings + answers)
+- OpenAI API (text-embedding-3-small for embeddings, gpt-4o-mini for answers)
 - Bootstrap 5 (responsive interface)
 - multer, pdf-parse, mammoth (file upload and reading)
 
@@ -26,7 +26,7 @@ This app lets users upload documents (PDF, TXT, DOCX or CSV) and ask questions a
 1. When a document is uploaded, it is split into small pieces (chunks).
 2. Each piece is turned into numbers (embeddings) and stored in the Memory Vector Store.
 3. When a question is asked, the app searches the stored pieces and finds the ones most similar to the question.
-4. These pieces are sent to the AI (Gemini), which answers using only them.
+4. These pieces are sent to the AI (gpt-4o-mini), which answers using only them.
 
 ## Setup Instructions
 
@@ -40,10 +40,10 @@ This app lets users upload documents (PDF, TXT, DOCX or CSV) and ask questions a
    ```
    npm install
    ```
-4. Get a free API key from https://aistudio.google.com/apikey
+4. Get an API key from https://platform.openai.com/api-keys
 5. Create a file named `.env` in the project folder:
    ```
-   GOOGLE_API_KEY=your_api_key_here
+   OPENAI_API_KEY=your_api_key_here
    ```
 6. Start the server:
    ```
