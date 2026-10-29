@@ -1,10 +1,19 @@
 # Document Chatbot (RAG)
 
-✏️ Write 2–3 sentences: what the app does and who it is for.
+This app lets users upload documents (PDF, TXT, DOCX or CSV) and ask questions about them by typing in the chat. The AI answers only from the content of the uploaded files.
 
 ## Features
-✏️ List what your app can do, one per line, starting with "- ".
-(Think: upload, file types, answers from the document, sources, multiple documents, dark mode, clear chat, clear documents, loading indicator, error handling.)
+- Upload PDF, TXT, DOCX and CSV files
+- Upload more than one document
+- Ask questions and get answers about anything in the files
+- Shows the source document under each answer
+- Loading indicator while the answer is generated
+- Error messages for unsupported files and empty questions
+- Conversation history during the session
+- Dark / Light mode
+- Clear chat
+- Clear documents and upload new ones without restarting the app
+- Responsive design that works on phones and computers
 
 ## Tech Stack
 - Node.js + Express (backend)
@@ -14,8 +23,10 @@
 - multer, pdf-parse, mammoth (file upload and reading)
 
 ## How It Works (RAG)
-✏️ Explain in 3–4 steps what happens when a document is uploaded and a question is asked.
-(Remember: split → embeddings → store → search similar chunks → AI answers only from them.)
+1. When a document is uploaded, it is split into small pieces (chunks).
+2. Each piece is turned into numbers (embeddings) and stored in the Memory Vector Store.
+3. When a question is asked, the app searches the stored pieces and finds the ones most similar to the question.
+4. These pieces are sent to the AI (Gemini), which answers using only them.
 
 ## Setup Instructions
 
@@ -44,9 +55,9 @@
 ```
 doc-chatbot-batoul/
 ├── public/
-│   ├── index.html   (chat interface)
-│   ├── style.css    (styles)
-│   └── app.js       (frontend logic)
+│   ├── index.html    (chat interface)
+│   ├── style.css     (styles)
+│   └── app.js        (frontend logic)
 ├── utils/
 │   ├── fileReader.js (reads PDF, TXT, DOCX, CSV)
 │   └── rag.js        (RAG logic with LangChain)

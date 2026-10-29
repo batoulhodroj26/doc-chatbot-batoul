@@ -1,16 +1,17 @@
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { MemoryVectorStore } = require('langchain/vectorstores/memory');
-const { GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI } = require('@langchain/google-genai');
+const { OpenAIEmbeddings, ChatOpenAI } = require('@langchain/openai');
 
-const embeddings = new GoogleGenerativeAIEmbeddings({
-  apiKey: process.env.GOOGLE_API_KEY,
-  model: 'gemini-embedding-001'
+const embeddings = new OpenAIEmbeddings({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: 'text-embedding-3-small'
 });
 
-const llm = new ChatGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-  model: 'gemini-3.8-flash',
-  temperature: 0
+const llm = new ChatOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: 'gpt-4o-mini',
+  temperature: 0,
+  maxRetries: 1
 });
 
 const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 150 });
@@ -24,7 +25,7 @@ async function addDocument(name, text) {
 }
 
 async function askQuestion(question) {
-  const results = await vectorStore.similaritySearch(question, 4);
+  const results = await vectorStore.similaritySearch(question, 6);
 
   if (results.length === 0) {
     return { answer: 'Please upload a document first.', sources: [] };
@@ -34,8 +35,9 @@ async function askQuestion(question) {
     .map((doc, i) => `[${i + 1}] (from ${doc.metadata.source})\n${doc.pageContent}`)
     .join('\n\n');
 
-  const prompt = `You are a helpful assistant. Answer the question using ONLY the context below.
-If the answer is not in the context, say: "I couldn't find that in the uploaded documents."
+  const prompt = `You are a helpful assistant. Answer the question using ONLY the context below, which comes from the user's uploaded documents.
+If the user asks what the document is about, what it includes, or for a summary, describe and summarize the context.
+Only if the question asks for specific information that is not in the context, say: "I couldn't find that in the uploaded documents."
 
 Context:
 ${context}
